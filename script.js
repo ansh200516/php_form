@@ -120,3 +120,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+document.getElementById('courseForm').addEventListener('input', () => {
+    const lecture = parseInt(document.getElementById('lectureHours').value) || 0;
+    const tutorial = parseInt(document.getElementById('tutorialHours').value) || 0;
+    const practical = parseInt(document.getElementById('practicalHours').value) || 0;
+
+    const totalCredits = lecture + tutorial + Math.floor(practical / 2);
+    document.getElementById('totalCredits').value = totalCredits;
+});
+
+document.getElementById('addFaculty').addEventListener('click', () => {
+    const facultyInputs = document.getElementById('facultyInputs');
+    const newInput = document.createElement('input');
+    newInput.type = 'text';
+    newInput.name = 'faculty[]';
+    facultyInputs.appendChild(newInput);
+});

@@ -21,7 +21,6 @@ try {
     // Check connection
     if ($conn->connect_error) {
         $response['message'] = "Connection Failed: " . $conn->connect_error;
-        $response['debug']['connect_errno'] = $conn->connect_errno;
         echo json_encode($response);
         exit;
     }
@@ -35,16 +34,17 @@ try {
     $code = $conn->real_escape_string($_POST['code'] ?? '');
     $course = $conn->real_escape_string($_POST['course'] ?? '');
     $resources = $conn->real_escape_string($_POST['resources'] ?? '');
-
-    // Determine status
-    $status = ($mode == 'submit') ? 'submitted' : 'draft';
+    $status = $conn->real_escape_string($_POST['status'] ?? '');
+    $departmentalCore = isset($_POST['departmentalCore']) ? 1 : 0;
+    $minorElective = isset($_POST['minorElective']) ? 1 : 0;
+    $prerequisites = $conn->real_escape_string($_POST['prerequisites'] ?? '');
+    $frequency = $conn->real_escape_string($_POST['frequency'] ?? '');
+    $faculty = $conn->real_escape_string($_POST['faculty'] ?? '');
 
     // Check if record exists
     $checkSql = "SELECT * FROM `form` WHERE `Course Code` = '$code'";
     $checkResult = $conn->query($checkSql);
     $recordExists = ($checkResult->num_rows > 0);
-
-    $response['debug']['record_exists'] = $recordExists;
 
     // Prepare SQL query based on existence
     if ($recordExists) {
@@ -52,16 +52,25 @@ try {
         $sql = "UPDATE `form` SET 
                 `Academic Unit` = '$au', 
                 `Course Name` = '$course', 
-                `Resources` = '$resources',
-                `dt` = current_timestamp(),
-                `status` = '$status'
+                `Resources` = '$resources', 
+                `Course Status` = '$status',
+                `Departmental Core` = '$departmentalCore',
+                `Minor Area Elective` = '$minorElective',
+                `Pre-requisites` = '$prerequisites',
+                `Frequency of Offering` = '$frequency',
+                `Visiting Faculty` = '$faculty',
+                `dt` = current_timestamp()
                 WHERE `Course Code` = '$code'";
     } else {
         // Insert new record
         $sql = "INSERT INTO `form` 
-                (`Academic Unit`, `Course Code`, `Course Name`, `Resources`, `dt`, `status`) 
+                (`Academic Unit`, `Course Code`, `Course Name`, `Resources`, `Course Status`, 
+                `Departmental Core`, `Minor Area Elective`, `Pre-requisites`, `Frequency of Offering`, 
+                `Visiting Faculty`, `dt`) 
                 VALUES 
-                ('$au', '$code', '$course', '$resources', current_timestamp(), '$status')";
+                ('$au', '$code', '$course', '$resources', '$status', 
+                '$departmentalCore', '$minorElective', '$prerequisites', '$frequency', 
+                '$faculty', current_timestamp())";
     }
 
     // Execute query
@@ -71,10 +80,8 @@ try {
     if ($result) {
         $response['success'] = true;
         $response['message'] = $recordExists ? 'Form updated' : 'Form saved';
-        $response['debug']['affected_rows'] = $conn->affected_rows;
     } else {
         $response['message'] = "Query Error: " . $conn->error;
-        $response['debug']['query_error'] = $conn->error;
     }
 
     // Close connection
@@ -82,7 +89,6 @@ try {
 
 } catch (Exception $e) {
     $response['message'] = "Exception: " . $e->getMessage();
-    $response['debug']['exception'] = $e->getMessage();
 }
 
 // Output detailed response

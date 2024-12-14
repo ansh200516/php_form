@@ -4,30 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Floatation Form</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <img class = "bg" src="bg.jpg" alt="_">
+    <img class="bg" src="bg.jpg" alt="_">
     <div class="container">
         <h1>Course Floatation Form</h1>
-        <p class="submitmsg">Form has been submitted</p>
-        <form action="index.php" method="post">
+        <form action="form.php" method="post">
             <input type="text" name="au" id="au" required placeholder="Enter the Academic Unit responsible">
             <br>
             <input type="text" name="code" id="code" required placeholder="Enter the Course Code">
             <br>
             <input type="text" name="course" id="course" required placeholder="Enter the Course Name">
             <br>
-            <textarea name="resources" id="resources" cols="30" rows="10" required placeholder="Enter the Resources required"></textarea>
+            <label for="ltp">L-T-P Structure</label>
+            <input type="number" name="lecture" id="lecture" required placeholder="Lecture hours">
+            <input type="number" name="tutorial" id="tutorial" required placeholder="Tutorial hours">
+            <input type="number" name="practical" id="practical" required placeholder="Practical hours">
             <br>
+            <label for="totalCredits">Total Credits (L + T + P/2)</label>
+            <input type="text" name="totalCredits" id="totalCredits" disabled>
+            <br>
+            <label for="courseStatus">Course Status</label>
+            <select name="status" id="status" required>
+                <option value="BS">BS</option>
+                <option value="GE">GE</option>
+                <option value="HU">HU</option>
+            </select>
+            <br>
+
+            <label for="departmentalCore">Departmental Core</label>
+            <input type="checkbox" name="departmentalCore" id="departmentalCore">
+            <br>
+
+            <label for="minorElective">Minor Area Elective</label>
+            <input type="checkbox" name="minorElective" id="minorElective">
+            <br>
+
+            <input type="text" name="prerequisites" id="prerequisites" placeholder="Pre-requisites">
+            <br>
+            <input type="text" name="frequency" id="frequency" placeholder="Frequency of Offering (Odd/Even)">
+            <br>
+            <input type="text" name="faculty" id="faculty" placeholder="Visiting Faculty">
+            <br>
+
+            <!-- Textbooks -->
+            <input type="text" name="textbook" id="textbook" placeholder="Textbook (For UG courses)">
+            <br>
+
+            <textarea name="resources" id="resources" required placeholder="Enter the Resources required"></textarea>
+            <br>
+
+            <!-- CLO/PLO Mapping -->
+            <h3>Course Learning Outcomes (CLOs) Mapping to Program Learning Outcomes (PLOs)</h3>
+            <label for="clo1">CLO 1</label>
+            <select name="clo1" id="clo1">
+                <option value="Weak">Weak</option>
+                <option value="Good">Good</option>
+                <option value="Excellent">Excellent</option>
+            </select>
+            <br>
+
+            <label for="clo2">CLO 2</label>
+            <select name="clo2" id="clo2">
+                <option value="Weak">Weak</option>
+                <option value="Good">Good</option>
+                <option value="Excellent">Excellent</option>
+            </select>
+            <br>
+
+            <label for="clo3">CLO 3</label>
+            <select name="clo3" id="clo3">
+                <option value="Weak">Weak</option>
+                <option value="Good">Good</option>
+                <option value="Excellent">Excellent</option>
+            </select>
+            <br>
+
+            <!-- Assessment Criteria -->
+            <h3>Assessment Strategy</h3>
+            <label for="assessmentType">Assessment Type</label>
+            <input type="text" name="assessmentType" id="assessmentType" placeholder="Type of Assessment">
+            <br>
+
+            <label for="assessmentMethod">Assessment Method</label>
+            <input type="text" name="assessmentMethod" id="assessmentMethod" placeholder="Method of Assessment">
+            <br>
+
+            <label for="assessmentWeight">Weight</label>
+            <input type="number" name="assessmentWeight" id="assessmentWeight" placeholder="Weight in Percentage">
+            <br>
+
+            <!-- Teaching and Learning Methodology -->
+            <h3>Teaching and Learning Methodology</h3>
+            <textarea name="teachingMethodology" id="teachingMethodology" placeholder="Enter Teaching Methodology" required></textarea>
+            <br>
+
+            <!-- Course Description -->
+            <h3>Course Description</h3>
+            <textarea name="courseContents" id="courseContents" placeholder="Course Content (100 words)" required></textarea>
+            <br>
+            <textarea name="targetAudience" id="targetAudience" placeholder="Target Audience" required></textarea>
+            <br>
+            <textarea name="industryRelevance" id="industryRelevance" placeholder="Industry Relevance (200 characters)" required></textarea>
+            <br>
+
             <button class="btn">Submit</button>
         </form>
     </div>
-    <script src="index.js"></script>
-    
+
+    <script src="script.js"></script>
 </body>
 </html>
-<!-- INSERT INTO `form1` (`sno`, `Academic Unit`, `Course Code`, `Course Name`, `Resources`, `dt`) VALUES ('1', 'abc', 'abc', 'abc', 'abc', current_timestamp()); -->
